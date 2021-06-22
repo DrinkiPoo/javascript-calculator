@@ -1,0 +1,36 @@
+  const str = this.state.input;
+    const pmxd = '+-x/';
+    const pxd = '+x/'
+
+    // zeros in the beginning or operators in the beginning (condition1)
+    // multiple decimals in a row (condition2)
+    // three consecutive operators in any case (condition3)
+    // state won't be messed with if any of these conditions are true
+    let condition1 = (str === '' && (val == 0 || '/*-+'.indexOf(val) > -1 ));
+    let condition2 = (str[str.length - 1] == '.' && val == '.');
+    let condition3= (pmxd.indexOf(str[str.length-1]) > -1 && pmxd.indexOf(str[str.length-2]) > -1 && pmxd.indexOf(val) > -1 );
+
+
+    // an operator followed by another (except a minus)
+    // first operator will be replaced by the second one
+    // if the following operator is a minux sign, it will be allowed 
+    // multiple minux signs will be prohibited withe help of condition3
+    let condition4 = (pmxd.indexOf(str[str.length-1]) > -1 && pxd.indexOf(val) > -1);
+
+    // a decimal sign is pressed in the beginning
+    // a 0 should be prepended
+    let condition5 = (str === "" && val === ".");
+
+    if(condition4){
+      this.setState(state=>({
+        input: state.input.slice(0,-1).concat(val)
+      }))
+    } else if (condition5){
+      this.setState(state=>({
+        input: "0."
+      }))
+    } else if (!condition1 && !condition2 && !condition3){
+      this.setState(state=>({
+        input: state.input+val.toString()
+      }))
+    } 
